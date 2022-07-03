@@ -1,0 +1,29 @@
+# https://github.com/release-drafter/release-drafter
+# for information on customizing this action's behavior.
+name: "auto-release"
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  runs-on: ubuntu-latest
+  steps:
+    - name: checkout
+      uses: actions/checkout@v2
+
+    - uses: actions-ecosystem/action-get-merged-pull-request@v1
+      id: get-merged-pull-request
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - uses: release-drafter/release-drafter@v5.20.0
+      with:
+        publish: true
+        prerelease: false
+        config-name: auto-release-config.yml
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  
